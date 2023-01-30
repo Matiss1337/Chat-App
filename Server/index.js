@@ -22,12 +22,27 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log(`${socket.id} has connected`);
+//original conection event
+
+socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`${socket.id} has joined room ${data}`);
+})
+
+//joining room event
+
+socket.on("send_message", (data) => {
+    socket.to(data.room).emit("receive_message", data)
+})
+//receiving msg from room and passing it the whole room event
+
 
 socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
     })
+    //dc event
 })
-//listening to the connection event and logging the socket id plus disconnecting
+
 
 
 server.listen(3001, () => {
