@@ -16,12 +16,12 @@ const sendMsg = async () => {
     }
 }
 
-
 useEffect(() => {
     socket.on('receive_message', (data) => {
         console.log(data)
     })
 }, [socket])
+
 
   return (
     <div className='Chat'>

@@ -18,29 +18,22 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-// sets up IO to accept from where our app is running and what methods to accept
+
 
 io.on("connection", (socket) => {
     console.log(`${socket.id} has connected`);
-//original conection event
 
 socket.on("join_room", (data) => {
     socket.join(data);
     console.log(`${socket.id} has joined room ${data}`);
 })
 
-//joining room event
-
 socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data)
 })
-//receiving msg from room and passing it the whole room event
-
-
 socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
     })
-    //dc event
 })
 
 
