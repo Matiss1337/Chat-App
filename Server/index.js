@@ -21,10 +21,10 @@ const io = new Server(server, {
 // sets up IO to accept from where our app is running and what methods to accept
 
 io.on("connection", (socket) => {
-    console.log(socket.id);
+    console.log(`${socket.id} has connected`);
 
 socket.on("disconnect", () => {
-    console.log("User has disconnected", socket.id);
+    console.log(`${socket.id} has disconnected`);
     })
 })
 //listening to the connection event and logging the socket id plus disconnecting
