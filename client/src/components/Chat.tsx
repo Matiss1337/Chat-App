@@ -17,7 +17,10 @@ const sendMsg = async () => {
             room: room,
             author: userName,
             message: msg,
-            time: new Date().toLocaleTimeString()
+            time:
+            new Date(Date.now()).getHours() +
+            ":" +
+            new Date(Date.now()).getMinutes()
         }
         await socket.emit('send_message', msgData);
         setMessages((prevMessages) => [...prevMessages, msgData]);
@@ -25,9 +28,13 @@ const sendMsg = async () => {
 }
 
 useEffect(() => {
-    socket.on('receive_message', (data: Msg) => {
-        setMessages((prevMessages) => [...prevMessages, data]);
-    });
+  socket.on("receive_message", (data) => {
+    setMessages((list) => [...list, data]);
+  });
+
+  return () => {
+    socket.off("receive_message");
+  };
 }, [socket]);
 
 
