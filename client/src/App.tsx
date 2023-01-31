@@ -10,19 +10,22 @@ import { Chat } from './components/Chat'
 function App() {
   const [userName, setUserName] = useState<string>("")
   const [room, setRoom] = useState<string>("")
+  const [inChat, setInChat] = useState<boolean>(false)
 
 
 
-  const joinRoom = () => {
+const joinRoom = () => {
     if(userName!=="" && room!==""){
       socket.emit('join_room', room)
+      setInChat(true)
     }
   }
 
 
   return (
     <div className="App">
-<div className="Chat">
+{/* {!inChat &&} */}
+<div className="Login">
 <h3>Join the Chat!</h3>
 
 <input type="text" placeholder="Enter your name" 
@@ -32,9 +35,10 @@ onChange={(event) => {setUserName(event.target.value)}}/>
 onChange={(event) => {setRoom(event.target.value)}}/>
 
 <button onClick={joinRoom}>Join</button>
-
-<Chat socket={socket} userName={userName} room={room}/>
 </div>
+{inChat && <Chat socket={socket} userName={userName} room={room}/>}
+
+
     </div>
   )
 }

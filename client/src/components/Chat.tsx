@@ -18,7 +18,7 @@ const sendMsg = async () => {
 
 useEffect(() => {
     socket.on('receive_message', (data) => {
-        console.log(data)
+        console.log(data.message)
     })
 }, [socket])
 
