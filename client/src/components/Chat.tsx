@@ -39,8 +39,14 @@ useEffect(() => {
         <div className="ChatBody">
             {messages.map((messageContent, index) => {
                 return (
-                    <div className="Message" key={index}>
-                        <h1>{messageContent.message}</h1>
+                    <div className={`${"Message"} ${messageContent.author === userName ? "SentMessage" : "ReceivedMessage"}`} key={index}>
+                        <div className="MessageContent">
+                            <h2>{messageContent.message}</h2>
+                        </div>
+                        <div className="MessageMeta">
+                            <p className='Author'>{messageContent.author}</p>
+                            <p>{messageContent.time}</p>
+                        </div>
                     </div>
                 )
             })}

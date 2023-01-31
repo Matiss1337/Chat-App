@@ -15,3 +15,35 @@
     height: 50vh;
     border: 2px solid black;
 }
+
+
+.MessageMeta{
+    display: flex;
+    justify-content: space-between;
+}
+.ChatBody{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid red;
+}
+
+.Message{
+    border: 2px solid black;
+    width: 150px;
+}
+
+.Author{
+    font-style: italic;
+    font-weight: bold;
+}
+
+.SentMessage{
+    background-color: lightblue;
+    align-self: flex-start;
+}
+
+.ReceivedMessage{
+    background-color: lightgreen;
+    align-self: flex-end;   
+}
