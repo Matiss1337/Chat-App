@@ -5,3 +5,13 @@
     align-items: center;
     flex-direction: column;
 }
+
+.Chat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 50vh;
+    border: 2px solid black;
+}

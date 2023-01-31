@@ -30,7 +30,7 @@ socket.on("join_room", (data) => {
 
 socket.on("send_message", (data) => {
     socket.to(data.room).emit("receive_message", data)
-    console.log(`${socket.id} has sent a message to room ${data.room}`)
+    console.log(`${socket.id} with name ${data.author} has sent a message to room ${data.room}`)
 })
 socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
