@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import React, { useState} from 'react'
 import './App.css'
 import { io } from 'socket.io-client'
 const socket = io('http://localhost:3001')
 //this connect me to socket.io server
 import { Chat } from './components/Chat'
+import { Login } from './components/Login'
+import { UserProvider } from './components/UserContext'
 
+export const UserContext = React.createContext({})
 
 
 function App() {
@@ -23,8 +26,9 @@ const joinRoom = () => {
 
 
   return (
+    <UserProvider>
     <div className="App">
-{/* {!inChat &&} */}
+{!inChat && <Login/>}
 <div className="Login">
 <h3>Join the Chat!</h3>
 
@@ -40,6 +44,7 @@ onChange={(event) => {setRoom(event.target.value)}}/>
 
 
     </div>
+    </UserProvider>
   )
 }
 

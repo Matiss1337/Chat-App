@@ -1,12 +1,19 @@
 import React, {useEffect, useState} from 'react'
 
+export interface Msg {
+    room: string,
+    author: string,
+    message: string,
+    time: string
+}
+
 export const Chat = ({socket, userName, room}) => {
 
 const [msg, setMsg] = useState<string>("")
 
 const sendMsg = async () => {
     if(msg !== ""){
-        const msgData = {
+        const msgData: Msg = {
             room: room,
             author: userName,
             message: msg,
@@ -37,3 +44,16 @@ useEffect(() => {
     </div>
   )
 }
+
+
+{/* <div className="Login">
+<h3>Join the Chat!</h3>
+
+<input type="text" placeholder="Enter your name" 
+onChange={(event) => {setUserName(event.target.value)}}/>
+
+<input type="text" placeholder="Room ID" 
+onChange={(event) => {setRoom(event.target.value)}}/>
+
+<button onClick={joinRoom}>Join</button>
+</div> */}
