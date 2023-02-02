@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 
 export interface Msg {
     room: string,
@@ -27,6 +27,10 @@ const sendMsg = async () => {
     }
 }
 
+const chatContainerRef = useRef(null);
+// const scrollToBottom = () => {chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight}
+
+
 useEffect(() => {
   socket.on("receive_message", (data) => {
     setMessages((list) => [...list, data]);
@@ -37,13 +41,17 @@ useEffect(() => {
   };
 }, [socket]);
 
+  useEffect(() => {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }, [messages]);
+
 
   return (
     <div className='Chat'>
         <div className="ChatHeader">
             <p>Live Chat</p>
         </div>
-        <div className="ChatBody">
+        <div className="ChatBody" ref={chatContainerRef}>
             {messages.map((messageContent, index) => {
                 return (
                     <div className={`${"Message"} ${messageContent.author === userName ? "SentMessage" : "ReceivedMessage"}`} key={index}>
