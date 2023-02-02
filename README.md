@@ -12,5 +12,5 @@ then you can chat where you see your messages as green and others as blue plus t
 ![image](https://user-images.githubusercontent.com/84022755/216345343-5aae02c8-6000-4f62-b7db-fd95fb85bf38.png)
 
 
-The messages thone will scroll to bottom when new messages are added
+The messages zone will scroll to bottom when new messages are added
 ![image](https://user-images.githubusercontent.com/84022755/216345582-22df5517-1c83-4cb4-b576-640b8904b20e.png)
