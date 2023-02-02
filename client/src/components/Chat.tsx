@@ -1,39 +1,31 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, { useEffect, useState } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 
-export interface Msg {
-    room: string,
-    author: string,
-    message: string,
-    time: string
-}
+function Chat({ socket, username, room }) {
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [messageList, setMessageList] = useState([]);
 
-export const Chat = ({socket, userName, room}) => {
-const [msg, setMsg] = useState<string>("")
-const [messages, setMessages] = useState<Msg[]>([])
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        room: room,
+        author: username,
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
 
-const sendMsg = async () => {
-    if(msg !== ""){
-        const msgData: Msg = {
-            room: room,
-            author: userName,
-            message: msg,
-            time:
-            new Date(Date.now()).getHours() +
-            ":" +
-            new Date(Date.now()).getMinutes()
-        }
-        await socket.emit('send_message', msgData);
-        setMessages((prevMessages) => [...prevMessages, msgData]);
+      await socket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
     }
-}
-
-const chatContainerRef = useRef(null);
-// const scrollToBottom = () => {chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight}
-
+  };
 
 useEffect(() => {
   socket.on("receive_message", (data) => {
-    setMessages((list) => [...list, data]);
+    setMessageList((list) => [...list, data]);
   });
 
   return () => {
@@ -41,37 +33,52 @@ useEffect(() => {
   };
 }, [socket]);
 
-  useEffect(() => {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }, [messages]);
+
 
 
   return (
-    <div className='Chat'>
-        <div className="ChatHeader">
-            <p>Live Chat</p>
-        </div>
-        <div className="ChatBody" ref={chatContainerRef}>
-            {messages.map((messageContent, index) => {
-                return (
-                    <div className={`${"Message"} ${messageContent.author === userName ? "SentMessage" : "ReceivedMessage"}`} key={index}>
-                        <div className="MessageContent">
-                            <h2>{messageContent.message}</h2>
-                        </div>
-                        <div className="MessageMeta">
-                            <p className='Author'>{messageContent.author}</p>
-                            <p>{messageContent.time}</p>
-                        </div>
-                    </div>
-                )
-            })}
-        </div>
-        <div className="ChatFooter">
-    <input type="text" placeholder="Type a message" 
-            onChange={(event) => {setMsg(event.target.value)}}/>
-            <button onClick={sendMsg}>&#9658;</button>
-        </div>
+    <div className="chat-window">
+      <div className="chat-header">
+        <p>Live Chat</p>
+      </div>
+      <div className="chat-body">
+        <ScrollToBottom className="message-container">
+          {messageList.map((messageContent) => {
+            return (
+              <div
+                className="message"
+                id={username === messageContent.author ? "you" : "other"}
+              >
+                <div>
+                  <div className="message-content">
+                    <p>{messageContent.message}</p>
+                  </div>
+                  <div className="message-meta">
+                    <p id="time">{messageContent.time}</p>
+                    <p id="author">{messageContent.author}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </ScrollToBottom>
+      </div>
+      <div className="chat-footer">
+        <input
+          type="text"
+          value={currentMessage}
+          placeholder="Hey..."
+          onChange={(event) => {
+            setCurrentMessage(event.target.value);
+          }}
+          onKeyPress={(event) => {
+            event.key === "Enter" && sendMessage();
+          }}
+        />
+        <button onClick={sendMessage}>&#9658;</button>
+      </div>
     </div>
-  )
+  );
 }
 
+export default Chat;
